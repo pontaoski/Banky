@@ -1,12 +1,10 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-
-  <title>#(title)</title>
-</head>
-
-<body>
-  <h1>#(title)</h1>
-</body>
-</html>
+#extend("base"):
+    #export("body"):
+        <div class="flex flex-col">
+            <div class="prose w-full h-full max-w-lg m-auto mt-10">
+                <h1>Welcome to the CivBank</h1>
+                <p>(mama sina)</p>
+            </div>
+        </div>
+    #endexport
+#endextend

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="http://localhost:5173/Public/@vite/client" type="module"></script>
+    <script src="http://localhost:5173/Public/app.js" type="module"></script>
+</head>
+
+<body class="font-display">
+    <header class="
+        w-full
+        bg-gradient-to-b from-cloud-300 to-cloud-500
+        border-b border-stone-50
+        p-3
+        flex flex-col md:flex-row justify-between">
+        <div>
+            <a href="/">CivBank</a>
+        </div>
+        <div>
+            #if(app.user):
+                <img class="h-6 aspect-auto" src="https://crafthead.net/cube/#(app.mcUserID)">
+            #else:
+                <a href="/auth/login">Log In</a>
+            #endif
+        </div>
+    </header>
+    <main>
+        #import("body")
+    </main>
+</body>
+
+</html>

@@ -29,6 +29,10 @@ class AuthController: RouteCollection {
         }
     }
     func goToDiscord(req: Request) async throws -> Response {
+        if req.auth.has(User.self) {
+            return req.redirect(to: "/")
+        }
+
         return req.redirect(to: authURL)
     }
     private func getToken(_ req: Request, for code: String) async throws -> String {
@@ -101,6 +105,10 @@ class AuthController: RouteCollection {
         return uuid
     }
     func callback(req: Request) async throws -> Response {
+        if req.auth.has(User.self) {
+            return req.redirect(to: "/")
+        }
+
         let token = try await getToken(req, for: req.query.get(String.self, at: "code"))
         let nick = try await getDiscordNick(req, token: token)
         let uuid = try await usernameToUUID(req, username: nick)
@@ -113,6 +121,8 @@ class AuthController: RouteCollection {
             try await user.create(on: req.db)
         }
 
-        throw Abort(.notImplemented)
+        req.auth.login(user)
+
+        return req.redirect(to: "/")
     }
 }

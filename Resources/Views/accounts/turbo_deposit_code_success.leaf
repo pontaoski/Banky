@@ -1,0 +1,13 @@
+<turbo-stream action="replace" target="deposit-code-page">
+  <template>
+    <div class="prose w-full h-full max-w-lg m-auto mt-10" id="deposit-code-page">
+        <h2>Deposit Code Created</h2>
+        <p class="tabular-nums text-3xl text-center mb-0">
+          #(data.code)
+        </p>
+        <p>
+          You can now give this code to whoever you'd like to receive the money via deposit code.
+        </p>
+    </div>
+  </template>
+</turbo-stream>

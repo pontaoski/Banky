@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-input[type="text"] {
+input[type="text"], input[type="number"] {
     border-radius: 3px;
 
     @apply border border-solid border-stone-50;

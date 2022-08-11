@@ -26,8 +26,9 @@ final class DepositCode: Model {
 
     init(code: String, issuer: User, ironAmount: Int, diamondAmount: Int) {
         self.code = code
-        self.issuer = issuer
+        self.$issuer.id = issuer.id!
         self.ironAmount = ironAmount
         self.diamondAmount = diamondAmount
+        self.redeemed = false
     }
 }

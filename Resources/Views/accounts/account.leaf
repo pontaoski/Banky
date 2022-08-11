@@ -29,6 +29,7 @@
             <div class="w-full max-w-lg">
                 #if(app.user.id == data.user.id):                                
                     <a class="pokitoki-button" href="/account/@me/deposit-code">Redeem A Deposit Code</a>
+                    <a class="pokitoki-button" href="/account/@me/create-deposit-code">Create A Deposit Code</a>
                 #else:
                     <a class="pokitoki-button" href="/account/#(data.user.id)/send-money">Send Money</a>
                 #endif

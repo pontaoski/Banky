@@ -1,0 +1,33 @@
+#extend("base"):
+    #export("body"):
+        <div class="flex flex-col">
+            <div class="prose w-full h-full max-w-lg m-auto mt-10" id="deposit-code-page">
+                <h2>Create a Deposit Code</h2>
+                <p>
+                    The funds will be withdrawn from your account and become a deposit code,
+                    which you can give to others to allow them to deposit money into their account.
+                    If you have a specific person in mind, you can transfer money directly by visiting
+                    their account page.
+                </p>
+                <form class="flex flex-col space-y-6" method="post">
+                    <div>
+                        <label for="diamondAmount">Diamond Amount:</label>
+                        <input id="diamondAmount" name="diamondAmount" value="#(data.diamondAmount)" type="number">
+                    </div>
+                    <div>
+                        <label for="ironAmount">Iron Amount:</label>
+                        <input id="ironAmount" name="ironAmount" value="#(data.ironAmount)" type="number">
+                    </div>
+                    <input type="submit" value="Create">
+                </form>
+                <div id="form-errors">
+                    #for(error in data.errors):
+                        <div class="form-error">
+                            <p>#(error)</p>
+                        </div>
+                    #endfor
+                </div>
+            </div>
+        </div>
+    #endexport
+#endextend

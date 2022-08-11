@@ -1,0 +1,12 @@
+<turbo-stream action="remove" targets=".form-error">
+</turbo-stream>
+
+#for(error in data.errors):
+<turbo-stream action="append" target="form-errors">
+  <template>
+    <div class="form-error">
+        <p>#(error)</p>
+    </div>
+  </template>
+</turbo-stream>
+#endfor

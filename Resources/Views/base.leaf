@@ -15,13 +15,16 @@
         bg-gradient-to-b from-cloud-300 to-cloud-500
         border-b border-stone-50
         p-3
-        flex flex-col md:flex-row justify-between">
+        flex flex-row justify-between">
         <div>
             <a href="/">CivBank</a>
         </div>
         <div>
             #if(app.user):
-                <img class="h-6 aspect-auto" src="https://crafthead.net/cube/#(app.mcUserID)">
+                <a href="/account/@me">
+                    <img class="inline h-6 aspect-auto" src="https://crafthead.net/cube/#(app.mcUserID)">
+                    My Account
+                </a>
             #else:
                 <a href="/auth/login">Log In</a>
             #endif

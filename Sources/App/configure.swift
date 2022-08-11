@@ -18,6 +18,8 @@ public func configure(_ app: Application) throws {
     ), as: .psql)
 
     app.migrations.add(CreateUser())
+    app.migrations.add(UserRolesAndBalance())
+    app.migrations.add(DepositCodeMigration())
 
     app.sessions.use(.fluent)
     app.migrations.add(SessionRecord.migration)

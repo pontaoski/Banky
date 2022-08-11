@@ -1,3 +1,62 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+input[type="text"] {
+    border-radius: 3px;
+
+    @apply border border-solid border-stone-50;
+    @apply ring-plasma-blue/50;
+    @apply px-2 py-1;
+    @apply active:border-plasma-blue hover:border-plasma-blue focus:border-plasma-blue focus:ring;
+}
+
+input[type="submit"], button, .pokitoki-button {
+    border-radius: 3px;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.125);
+    text-shadow: 1px 1px #ffffff;
+
+    @apply bg-gradient-to-b from-cloud-50 to-cloud-200 text-charcoal;
+    @apply px-3 py-1;
+    @apply border border-solid border-stone-50;
+    @apply active:bg-none active:bg-plasma-blue/30 active:border-plasma-blue;
+    @apply hover:border-plasma-blue focus:border-plasma-blue;
+    @apply disabled:bg-none disabled:bg-cloud-200 disabled:border-stone-50 disabled:text-charcoal/50;
+    @apply no-underline text-center;
+}
+
+input[type="submit"]:disabled, button:disabled, .pokitoki-button:disabled {
+    text-shadow: none;
+    box-shadow: none;
+}
+
+input[type="submit"]:active, button:active, .pokitoki-button:active {
+    text-shadow: none;
+    box-shadow: none;
+}
+
+.modal {
+    display: none;
+}
+.modal.visible {
+    display: initial;
+    @apply fixed top-0 left-0 w-full h-full z-50 bg-charcoal-900/50 flex flex-col items-center pt-10 md:pt-40;
+}
+.modal-content {
+    @apply bg-white p-8 rounded;
+}
+#form-errors {
+    @apply my-6;
+}
+.form-error, .form-success {
+    @apply px-4 py-2 border rounded;
+}
+.form-error p, .form-success p {
+    @apply my-0;
+}
+.form-error {
+    @apply border-red-500 bg-red-500/10;
+}
+.form-success {
+    @apply border-lime-500 bg-lime-500/10;
+}

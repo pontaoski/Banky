@@ -85,7 +85,7 @@ class AuthController: RouteCollection {
 
         return member.nick ?? member.user.username
     }
-    func usernameToUUID(_ req: Request, username: String) async throws -> UUID {
+    static func usernameToUUID(_ req: Request, username: String) async throws -> UUID {
         struct Body: Content {
             let name: String
             let id: String
@@ -111,13 +111,13 @@ class AuthController: RouteCollection {
 
         let token = try await getToken(req, for: req.query.get(String.self, at: "code"))
         let nick = try await getDiscordNick(req, token: token)
-        let uuid = try await usernameToUUID(req, username: nick)
+        let uuid = try await AuthController.usernameToUUID(req, username: nick)
         let user: User
 
         if let us = try await User.query(on: req.db).filter(\.$id == uuid).first() {
             user = us
         } else {
-            user = User(id: uuid)
+            user = User(id: uuid, role: .member, iron: 0, diamonds: 0)
             try await user.create(on: req.db)
         }
 

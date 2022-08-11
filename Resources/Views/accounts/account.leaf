@@ -1,0 +1,38 @@
+#extend("base"):
+    #export("body"):
+        <div class="flex flex-col space-y-10 items-center">
+            #if(data.depositSuccessful):
+                <div class="form-success w-full max-w-lg mt-10">
+                    <p>
+                        The funds were successfully deposited into your account.
+                    </p>
+                </div>
+            #endif
+            <div class="
+                prose w-full h-full max-w-lg m-auto mt-10
+                p-6 border border-solid border-stone-50 rounded">
+                <div class="flex flex-col items-center">
+                    <div class="flex flex-col md:flex-row md:space-x-10 items-center">
+                        <img class="md:h-32 aspect-auto" src="https://crafthead.net/bust/#(data.mcUserID)">
+                        <div class="flex flex-col">
+                            <h2 class="mt-0">OnceDoceTrece</h2>
+                            #if(app.user.id == data.user.id):                                
+                            <p class="mb-0">
+                                <span>Diamonds: #(app.user.diamondBalance)</span>
+                                <span>Iron: #(app.user.ironBalance)</span>
+                            </p>
+                            #endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full max-w-lg">
+                #if(app.user.id == data.user.id):                                
+                    <a class="pokitoki-button" href="/account/@me/deposit-code">Redeem A Deposit Code</a>
+                #else:
+                    <a class="pokitoki-button" href="/account/#(data.user.id)/send-money">Send Money</a>
+                #endif
+            </div>
+        </div>
+    #endexport
+#endextend

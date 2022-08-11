@@ -1,0 +1,9 @@
+#extend("base"):
+    #export("body"):
+        <div class="flex flex-col">
+            <div class="prose w-full h-full max-w-lg m-auto mt-10 text-center">
+                <h1>#(data) doesn't seem to be a valid account...</h1>
+            </div>
+        </div>
+    #endexport
+#endextend

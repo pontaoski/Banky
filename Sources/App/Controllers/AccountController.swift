@@ -104,7 +104,14 @@ class AccountController: RouteCollection {
         guard let user = try await User.query(on: request.db).filter(\.$id == uuid).first() else {
             return try await request.view.render("account_not_made_yet", NotCreatedAccountData(display: who, uuidString: uuid.uuidString.lowercased()))
         }
-        return try await request.view.render("accounts/account", AccountData(user: try await UserWrapper(user: user), mcUserID: user.id!.uuidString.lowercased(), depositSuccessful: nil, adjustmentSuccessful: nil))
+        return try await request.view.render("accounts/account",
+            AccountData(
+                user: try await UserWrapper(user: user),
+                mcUserID: user.id!.uuidString.lowercased(),
+                depositSuccessful: nil,
+                adjustmentSuccessful: (try? request.query.get(String.self, at: "adjust_success")).map { $0 == "yes" }
+            )
+        )
     }
     struct DepositCodeForm: Codable {
         var depositCode: String = ""

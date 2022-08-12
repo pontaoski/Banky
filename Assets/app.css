@@ -16,6 +16,7 @@ input[type="submit"], button, .pokitoki-button {
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.125);
     text-shadow: 1px 1px #ffffff;
 
+    @apply inline-block;
     @apply bg-gradient-to-b from-cloud-50 to-cloud-200 text-charcoal;
     @apply px-3 py-1;
     @apply border border-solid border-stone-50;

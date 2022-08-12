@@ -37,6 +37,7 @@
                 #if(app.user.id == data.user.id):                                
                     <a class="pokitoki-button" href="/account/@me/deposit-code">Redeem A Deposit Code</a>
                     <a class="pokitoki-button" href="/account/@me/create-deposit-code">Create A Deposit Code</a>
+                    <a class="pokitoki-button" href="/account/@me/deposit-codes">View Created Deposit Codes</a>
                 #else:
                     <a class="pokitoki-button" href="/account/#(data.user.username)/send-money">Send Money</a>
                 #endif

@@ -76,11 +76,39 @@ class AccountController: RouteCollection {
         prot.group("account") { routes in
             routes.get("@me", use: me)
             routes.get(":who", use: otherUser)
+            routes.get("@me", "deposit-codes") { (request: Request) async throws -> Response in
+                let user = try await UserWrapper(user: request.auth.require())
+                return request.redirect(to: "/account/\(user.username)/deposit-codes")
+            }
+            routes.get(":who", "deposit-codes", use: depositCodes)
             routes.get("@me", "deposit-code", use: useDepositCode)
             routes.post("@me", "deposit-code", use: postDepositCode)
             routes.get("@me", "create-deposit-code", use: createDepositCode)
             routes.post("@me", "create-deposit-code", use: postCreateDepositCode)
         }
+    }
+    struct DepositCodes: Codable {
+        let pages: Page<DepositCode>
+    }
+    func depositCodes(request: Request) async throws -> AnyAsyncResponse {
+        let who = request.parameters.get("who")!
+        let uuid: UUID
+        do {
+            uuid = try await usernameUUIDCache.uuid(for: who)
+        } catch {
+            return try await .init(request.view.render("accounts/bad_account", who))
+        }
+        guard let user = try await User.query(on: request.db).filter(\.$id == uuid).first() else {
+            return try await .init(request.view.render("accounts/account_not_made_yet", NotCreatedAccountData(display: who, uuidString: uuid.uuidString.lowercased())))
+        }
+        let me = try request.auth.require(User.self)
+        guard user.id == me.id || me.role >= .admin else {
+            throw Abort(.forbidden)
+        }
+
+        let pages = try await DepositCode.query(on: request.db).filter(\.$issuer.$id == user.id!).paginate(for: request)
+
+        return try await .init(request.view.render("accounts/deposit_codes", DepositCodes(pages: pages)))
     }
     func me(request: Request) async throws -> View {
         let user = try await UserWrapper(user: request.auth.require(User.self))

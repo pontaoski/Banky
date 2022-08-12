@@ -2,12 +2,13 @@ import Fluent
 import Vapor
 
 fileprivate struct AccountData: Codable {
-    let user: User
+    let user: UserWrapper
     let mcUserID: String
     let depositSuccessful: Bool?
+    let adjustmentSuccessful: Bool?
 }
 
-fileprivate struct NotCreatedAccountData: Codable {
+struct NotCreatedAccountData: Codable {
     let display: String
     let uuidString: String
 }
@@ -82,12 +83,13 @@ class AccountController: RouteCollection {
         }
     }
     func me(request: Request) async throws -> View {
-        let user = try request.auth.require(User.self)
+        let user = try await UserWrapper(user: request.auth.require(User.self))
         return try await request.view.render("accounts/account",
             AccountData(
                 user: user,
                 mcUserID: user.id!.uuidString.lowercased(),
-                depositSuccessful: (try? request.query.get(String.self, at: "funds_added")).map { $0 == "yes" }
+                depositSuccessful: (try? request.query.get(String.self, at: "funds_added")).map { $0 == "yes" },
+                adjustmentSuccessful: (try? request.query.get(String.self, at: "adjust_success")).map { $0 == "yes" }
             )
         )
     }
@@ -95,14 +97,14 @@ class AccountController: RouteCollection {
         let who = request.parameters.get("who")!
         let uuid: UUID
         do {
-            uuid = try await AuthController.usernameToUUID(request, username: who)
+            uuid = try await usernameUUIDCache.uuid(for: who)
         } catch {
             return try await request.view.render("bad_account", who)
         }
         guard let user = try await User.query(on: request.db).filter(\.$id == uuid).first() else {
             return try await request.view.render("account_not_made_yet", NotCreatedAccountData(display: who, uuidString: uuid.uuidString.lowercased()))
         }
-        return try await request.view.render("accounts/account", AccountData(user: user, mcUserID: user.id!.uuidString.lowercased(), depositSuccessful: nil))
+        return try await request.view.render("accounts/account", AccountData(user: try await UserWrapper(user: user), mcUserID: user.id!.uuidString.lowercased(), depositSuccessful: nil, adjustmentSuccessful: nil))
     }
     struct DepositCodeForm: Codable {
         var depositCode: String = ""
@@ -116,7 +118,7 @@ class AccountController: RouteCollection {
             let code: String
         }
         let form = try request.content.decode(Form.self)
-        let user: User = try request.auth.require()
+        let user = try request.auth.require(User.self)
         let context = DepositCodeForm(depositCode: form.code)
 
         guard let depositCode = try await DepositCode.query(on: request.db)
@@ -161,7 +163,7 @@ class AccountController: RouteCollection {
             let ironAmount: Int
         }
         let form = try request.content.decode(Form.self)
-        let user: User = try request.auth.require()
+        let user = try request.auth.require(User.self)
         var errors: [String] = []
 
         if user.diamondBalance < form.diamondAmount {

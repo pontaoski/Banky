@@ -17,7 +17,7 @@
         p-3
         flex flex-row justify-between">
         <div>
-            <a href="/">CivBank</a>
+            <a href="/">Esun</a>
         </div>
         <div>
             #if(app.user):

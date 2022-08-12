@@ -7,6 +7,100 @@ enum AuthError: Error {
     case badUUID
 }
 
+let usernameUUIDCache = UsernameUUIDCache()
+
+actor UsernameUUIDCache {
+    private var usernamesToUUID = [String: UUID]()
+    private var uuidsToUsername = [UUID: String]()
+
+    private var activeUsernameTasks = [String: Task<UUID, Error>]()
+    private var activeUUIDTasks = [UUID: Task<String, Error>]()
+
+    private var app: Application
+    private var client: Client
+
+    init() {
+        app = Application()
+        client = app.client
+    }
+    deinit {
+        app.shutdown()
+    }
+
+    func uuid(for username: String) async throws -> UUID {
+        if let uuid = usernamesToUUID[username] {
+            return uuid
+        }
+        if let existingTask = activeUsernameTasks[username] {
+            return try await existingTask.value
+        }
+
+        let task = Task<UUID, Error> {
+            struct Body: Content {
+                let name: String
+                let id: String
+            }
+
+            defer {
+                activeUsernameTasks[username] = nil
+            }
+
+            let resp = try await client.get("https://api.mojang.com/users/profiles/minecraft/\(username)")
+            let body = try resp.content.decode(Body.self)
+            let badID = body.id
+            let chunkOne = String(badID.prefix(8))
+            let chunkTwo = String(badID.dropFirst(8).prefix(4))
+            let chunkThree = String(badID.dropFirst(12).prefix(4))
+            let chunkFour = String(badID.dropFirst(16).prefix(4))
+            let chunkFive = String(badID.suffix(12))
+            let cleaned: String = [chunkOne, chunkTwo, chunkThree, chunkFour, chunkFive].joined(separator: "-")
+
+            guard let uuid = UUID(uuidString: cleaned) else {
+                throw AuthError.badUUID
+            }
+
+            self.usernamesToUUID[username] = uuid
+            self.uuidsToUsername[uuid] = username
+
+            return uuid
+        }
+
+        activeUsernameTasks[username] = task
+        return try await task.value
+    }
+    func username(for uuid: UUID) async throws -> String {
+        if let username = uuidsToUsername[uuid] {
+            return username
+        }
+        if let existingTask = activeUUIDTasks[uuid] {
+            return try await existingTask.value
+        }
+
+        let task = Task<String, Error> {
+            struct Body: Content {
+                let name: String
+                let id: String
+            }
+
+            defer {
+                activeUUIDTasks[uuid] = nil
+            }
+
+            let cleaned = uuid.uuidString.lowercased().replacingOccurrences(of: "-", with: "")
+            let resp = try await client.get("https://sessionserver.mojang.com/session/minecraft/profile/\(cleaned)")
+            let body = try resp.content.decode(Body.self)
+
+            self.usernamesToUUID[body.name] = uuid
+            self.uuidsToUsername[uuid] = body.name
+
+            return body.name
+        }
+
+        activeUUIDTasks[uuid] = task
+        return try await task.value
+    }
+}
+
 class AuthController: RouteCollection {
     private func _authURL() -> String {
         let oauth = Config.instance.oauth
@@ -85,25 +179,6 @@ class AuthController: RouteCollection {
 
         return member.nick ?? member.user.username
     }
-    static func usernameToUUID(_ req: Request, username: String) async throws -> UUID {
-        struct Body: Content {
-            let name: String
-            let id: String
-        }
-        let resp = try await req.client.get("https://api.mojang.com/users/profiles/minecraft/\(username)")
-        let body = try resp.content.decode(Body.self)
-        let badID = body.id
-        let chunkOne = String(badID.prefix(8))
-        let chunkTwo = String(badID.dropFirst(8).prefix(4))
-        let chunkThree = String(badID.dropFirst(12).prefix(4))
-        let chunkFour = String(badID.dropFirst(16).prefix(4))
-        let chunkFive = String(badID.suffix(12))
-        let cleaned: String = [chunkOne, chunkTwo, chunkThree, chunkFour, chunkFive].joined(separator: "-")
-        guard let uuid = UUID(uuidString: cleaned) else {
-            throw AuthError.badUUID
-        }
-        return uuid
-    }
     func callback(req: Request) async throws -> Response {
         if req.auth.has(User.self) {
             return req.redirect(to: "/")
@@ -111,7 +186,7 @@ class AuthController: RouteCollection {
 
         let token = try await getToken(req, for: req.query.get(String.self, at: "code"))
         let nick = try await getDiscordNick(req, token: token)
-        let uuid = try await AuthController.usernameToUUID(req, username: nick)
+        let uuid = try await usernameUUIDCache.uuid(for: nick)
         let user: User
 
         if let us = try await User.query(on: req.db).filter(\.$id == uuid).first() {

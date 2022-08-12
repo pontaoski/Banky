@@ -2,12 +2,12 @@ import Vapor
 import Foundation
 
 struct AppData: Codable {
-    var user: User?
+    var user: UserWrapper?
     var mcUserID: String?
 
     init(from req: Request) async throws {
-        self.user = req.auth.get()
-        if let user = self.user {
+        if let user = req.auth.get(User.self) {
+            self.user = try await UserWrapper(user: user)
             self.mcUserID = user.id?.uuidString.lowercased()
         }
     }

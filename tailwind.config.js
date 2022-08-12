@@ -5,6 +5,9 @@ module.exports = {
         "Resources/Views/*/*/*.leaf",
         "Assets/controllers/*.ts",
         "Assets/controllers/*/*.ts",
+        "Sources/App/*.swift",
+        "Sources/App/*/*.swift",
+        "Sources/App/*/*/*.swift",
     ],
     darkMode: 'media',
     theme: {

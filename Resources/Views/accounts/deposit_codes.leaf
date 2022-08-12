@@ -23,6 +23,7 @@
                     </div>
                 #endfor
             </div>
+            #paginate(data.pages.metadata)
         </div>
     #endexport
 #endextend

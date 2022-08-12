@@ -8,6 +8,11 @@
         <p>
           You can now give this code to whoever you'd like to receive the money via deposit code.
         </p>
+        <p>
+          <a href="/account/@me/create-deposit-code">Create another deposit code</a>
+          or
+          <a href="/account/@me">go back to your account.</a>
+        </p>
     </div>
   </template>
 </turbo-stream>

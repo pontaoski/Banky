@@ -99,10 +99,10 @@ class AccountController: RouteCollection {
         do {
             uuid = try await usernameUUIDCache.uuid(for: who)
         } catch {
-            return try await request.view.render("bad_account", who)
+            return try await request.view.render("accounts/bad_account", who)
         }
         guard let user = try await User.query(on: request.db).filter(\.$id == uuid).first() else {
-            return try await request.view.render("account_not_made_yet", NotCreatedAccountData(display: who, uuidString: uuid.uuidString.lowercased()))
+            return try await request.view.render("accounts/account_not_made_yet", NotCreatedAccountData(display: who, uuidString: uuid.uuidString.lowercased()))
         }
         return try await request.view.render("accounts/account",
             AccountData(

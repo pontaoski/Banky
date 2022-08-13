@@ -67,6 +67,10 @@ input[type="submit"], button, .pokitoki-button {
     @apply md:mt-12 md:ml-6;
 }
 
+.folder-nest-2 {
+    @apply md:mt-24 md:ml-12;
+}
+
 .breadcrumbs-bar {
     @apply flex flex-row px-8 py-4 items-center space-x-4 md:hidden;
 }

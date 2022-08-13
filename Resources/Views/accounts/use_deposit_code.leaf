@@ -1,26 +1,42 @@
 #extend("base"):
     #export("body"):
-        <div class="flex flex-col">
-            <div class="prose w-full h-full max-w-lg m-auto mt-10">
-                <h2>Redeem Deposit Code</h2>
-                <form class="flex flex-col space-y-6" method="post">
-                    <input name="code" placeholder="XXX-XXX-XXXX" value="#(data.depositCode)" type="text">
-                    <input type="submit" value="Redeem">
-                </form>
-                <div id="form-errors">
-                    #for(error in data.errors):
-                        <div class="form-error">
-                            <p>#(error)</p>
-                        </div>
-                    #endfor
+        <nav class="breadcrumbs-bar">
+            <a href="/">#breadcrumb("Home", "home")</a>
+            <span class="codicon codicon-triangle-right text-sm"></span>
+            <a href="/account/@me">#breadcrumb("My Account")</a>
+            <span class="codicon codicon-triangle-right text-sm"></span>
+            <a href="/account/@me/deposit-code">#breadcrumb("Redeem Deposit Code")</a>
+        </nav>
+        <div class="folder-stack">
+            <div class="folder">
+                <div class="folder-tab"><a href="/account/@me">My Account</a></div>
+                <div class="folder-content space-y-4">
                 </div>
-                <hr>
-                <h3>Looking for a deposit code?</h3>
-                <p>
-                    Deposit codes can be obtained from chests in select cities.
-                    They will contain a book and quill with the deposit code.
-                    The buy price of the book and quill will be the value deposited into your account.
-                </p>
+            </div>
+            <div class="folder folder-nest">
+                <div class="folder-tab">Redeem Deposit Code</div>
+                <div class="folder-content">
+                    <form class="flex flex-col space-y-6" method="post">
+                        <input name="code" placeholder="XXX-XXX-XXXX" value="#(data.depositCode)" type="text">
+                        <input type="submit" value="Redeem">
+                    </form>
+                    <div id="form-errors">
+                        #for(error in data.errors):
+                            <div class="form-error">
+                                <p>#(error)</p>
+                            </div>
+                        #endfor
+                    </div>
+                    <hr>
+                    <div class="prose w-full max-w-none">
+                        <h3>Looking for a deposit code?</h3>
+                        <p>
+                            Deposit codes can be obtained from chests in select cities.
+                            They will contain a book and quill with the deposit code.
+                            The buy price of the book and quill will be the value deposited into your account.
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     #endexport

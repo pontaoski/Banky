@@ -9,6 +9,7 @@ public func configure(_ app: Application) throws {
     app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
 
     app.leaf.tags["paginate"] = PaginationTag()
+    app.leaf.tags["breadcrumb"] = Breadcrumb()
 
     let dbConfig = Config.instance.database
     app.databases.use(.postgres(

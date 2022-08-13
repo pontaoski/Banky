@@ -26,6 +26,51 @@ input[type="submit"], button, .pokitoki-button {
     @apply no-underline text-center;
 }
 
+.folder {
+    max-height: 32rem;
+
+    @apply flex flex-col;
+    @apply w-full max-w-3xl;
+    @apply h-full;
+}
+
+.folder-stack {
+    @apply mx-4 md:my-4;
+}
+
+.folder-stack .folder {
+    @apply md:absolute;
+}
+
+.folder-stack > * {
+    @apply hidden md:flex;
+}
+.folder-stack > *:last-child {
+    @apply block md:flex;
+}
+
+.folder-tab {
+    margin-bottom: -1px;
+
+    @apply w-fit bg-white px-4 py-2;
+    @apply border border-stone-50 border-b-white rounded-t-lg z-50;
+    @apply hidden md:flex;
+}
+
+.folder-content {
+    @apply w-fit bg-white md:px-4 md:py-2 space-y-4;
+    @apply md:border md:border-stone-50 rounded-b-lg rounded-tr-lg w-full z-40;
+    @apply h-full;
+}
+
+.folder-nest {
+    @apply md:mt-12 md:ml-6;
+}
+
+.breadcrumbs-bar {
+    @apply flex flex-row px-8 py-4 items-center space-x-4 md:hidden;
+}
+
 input[type="submit"]:disabled, button:disabled, .pokitoki-button:disabled {
     text-shadow: none;
     box-shadow: none;

@@ -33,10 +33,17 @@ class TellerController: RouteCollection {
         }
 
         var form: Form = Form()
+        var user: UserWrapper?
         var errors: [String] = []
     }
-    func adjustBalance(request: Request) async throws -> View {
-        return try await request.view.render("accounts/adjust_balance", AdjustBalance())
+    func adjustBalance(request: Request) async throws -> AnyAsyncResponse {
+        let who = request.parameters.get("who")!
+        let uuid = try await usernameUUIDCache.uuid(for: who)
+        guard let user = try await User.query(on: request.db).filter(\.$id == uuid).first() else {
+            return try await .init(request.view.render("accounts/account_not_made_yet", NotCreatedAccountData(display: who, uuidString: uuid.uuidString.lowercased())))
+        }
+
+        return try await .init(request.view.render("accounts/adjust_balance", AdjustBalance(user: UserWrapper(user: user))))
     }
     func doAdjustBalance(request: Request) async throws -> Response {
         let form = try request.content.decode(AdjustBalance.Form.self)
@@ -44,7 +51,7 @@ class TellerController: RouteCollection {
         let uuid = try await usernameUUIDCache.uuid(for: who)
 
         guard let user = try await User.query(on: request.db).filter(\.$id == uuid).first() else {
-            return try await request.formErrors(form: "accounts/adjust_balance", context: AdjustBalance(form: form, errors: ["That user doesn't have an account yet..."]))
+            return try await request.formErrors(form: "accounts/adjust_balance", context: AdjustBalance(form: form, user: nil, errors: ["That user doesn't have an account yet..."]))
         }
 
         user.ironBalance += form.ironAdjustment

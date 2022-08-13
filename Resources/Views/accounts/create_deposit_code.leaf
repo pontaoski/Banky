@@ -1,32 +1,51 @@
 #extend("base"):
     #export("body"):
+        <nav class="breadcrumbs-bar">
+            <a href="/">#breadcrumb("Home", "home")</a>
+            <span class="codicon codicon-triangle-right text-sm"></span>
+            <a href="/account/@me">#breadcrumb("My Account")</a>
+            <span class="codicon codicon-triangle-right text-sm"></span>
+            <a href="/account/@me/deposit-code">#breadcrumb("Create a Deposit Code")</a>
+        </nav>
+        <div class="folder-stack">
+            <div class="folder">
+                <div class="folder-tab"><a href="/account/@me">My Account</a></div>
+                <div class="folder-content space-y-4">
+                </div>
+            </div>
+            <div class="folder folder-nest">
+                <div class="folder-tab">Create a Deposit Code</div>
+                <div class="folder-content prose max-w-none space-y-4">
+                    <p>
+                        The funds will be withdrawn from your account and become a deposit code,
+                        which you can give to others to allow them to deposit money into their account.
+                        If you have a specific person in mind, you can transfer money directly by visiting
+                        their account page.
+                    </p>
+                    <form class="flex flex-col space-y-6" method="post">
+                        <div>
+                            <label for="diamondAmount">Diamond Amount:</label>
+                            <input id="diamondAmount" name="diamondAmount" value="#(data.diamondAmount)" type="number">
+                        </div>
+                        <div>
+                            <label for="ironAmount">Iron Amount:</label>
+                            <input id="ironAmount" name="ironAmount" value="#(data.ironAmount)" type="number">
+                        </div>
+                        <input type="submit" value="Create">
+                    </form>
+                    <div id="form-errors">
+                        #for(error in data.errors):
+                            <div class="form-error">
+                                <p>#(error)</p>
+                            </div>
+                        #endfor
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="flex flex-col">
             <div class="prose w-full h-full max-w-lg m-auto mt-10" id="deposit-code-page">
-                <h2>Create a Deposit Code</h2>
-                <p>
-                    The funds will be withdrawn from your account and become a deposit code,
-                    which you can give to others to allow them to deposit money into their account.
-                    If you have a specific person in mind, you can transfer money directly by visiting
-                    their account page.
-                </p>
-                <form class="flex flex-col space-y-6" method="post">
-                    <div>
-                        <label for="diamondAmount">Diamond Amount:</label>
-                        <input id="diamondAmount" name="diamondAmount" value="#(data.diamondAmount)" type="number">
-                    </div>
-                    <div>
-                        <label for="ironAmount">Iron Amount:</label>
-                        <input id="ironAmount" name="ironAmount" value="#(data.ironAmount)" type="number">
-                    </div>
-                    <input type="submit" value="Create">
-                </form>
-                <div id="form-errors">
-                    #for(error in data.errors):
-                        <div class="form-error">
-                            <p>#(error)</p>
-                        </div>
-                    #endfor
-                </div>
+ 
             </div>
         </div>
     #endexport

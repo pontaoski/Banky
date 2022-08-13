@@ -1,6 +1,29 @@
 import Leaf
 import Foundation
 
+struct Breadcrumb: LeafTag, UnsafeUnescapedLeafTag {
+    struct BreadcrumbError: Error { }
+    func render(_ ctx: LeafContext) throws -> LeafData {
+        switch ctx.parameters.count {
+        case 1:
+            return .string("""
+            <div class="flex flex-row items-center space-x-1">
+                <span class="text-sm">\(ctx.parameters[0].string ?? "")</span>
+            </div>
+            """)
+        case 2:
+            return .string("""
+            <div class="flex flex-row items-center space-x-1">
+                <span class="codicon codicon-\(ctx.parameters[1].string ?? "") text-sm"></span>
+                <span class="text-sm">\(ctx.parameters[0].string ?? "")</span>
+            </div>
+            """)
+        default:
+            throw BreadcrumbError()
+        }
+    }
+}
+
 struct PaginationTag: LeafTag, UnsafeUnescapedLeafTag {
     struct PaginationError: Error { }
     func render(_ ctx: LeafContext) throws -> LeafData {

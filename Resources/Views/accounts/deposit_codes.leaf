@@ -1,29 +1,41 @@
 #extend("base"):
     #export("body"):
-        <div class="prose flex flex-col items-center m-auto space-y-4">
-            <div class="w-full max-w-xl">
-                <h2>Your Deposit Codes</h2>
-                <p>These are deposit codes that you've made in the past.</p>
+        <nav class="breadcrumbs-bar">
+            <a href="/">#breadcrumb("Home", "home")</a>
+            <span class="codicon codicon-triangle-right text-sm"></span>
+            <a href="/account/@me">#breadcrumb("My Account")</a>
+            <span class="codicon codicon-triangle-right text-sm"></span>
+            <a href="/account/@me/deposit-codes">#breadcrumb("Deposit Codes")</a>
+        </nav>
+        <div class="folder-stack">
+            <div class="folder">
+                <div class="folder-tab"><a href="/account/@me">My Account</a></div>
+                <div class="folder-content space-y-4">
+                </div>
             </div>
-            <div class="rounded border border-cloud-700 w-full max-w-xl flex flex-col bg-cloud-50 space-y-2">
-                #for(page in data.pages.items):
-                    <div class="px-6 py-4 bg-white rounded">
-                        <div class="flex flex-row items-center justify-between">
-                            <div class="flex flex-col">
-                                <h4 class="mt-0">#(page.code)</h4>
-                                <div class="flex flex-row space-x-4">
-                                    <span>Iron: #(page.ironAmount)</span>
-                                    <span>Diamond: #(page.diamondAmount)</span>
-                                </div>
-                            </div>
-                            <div>
-                                Redeemed: #(page.redeemed)
-                            </div>
-                        </div>
-                    </div>
-                #endfor
+            <div class="folder folder-nest">
+                <div class="folder-tab">Deposit Codes</div>
+                <div class="folder-content space-y-4">
+                    <p>These are deposit codes that you've made in the past.</p>
+                    <table class="prose prose-th:px-2 prose-td:py-0 max-w-none w-full">
+                        <tr>
+                            <th>Code</th>
+                            <th>Iron Amount</th>
+                            <th>Diamond Amount</th>
+                            <th>Redeemed</th>
+                        </tr>
+                        #for(page in data.pages.items):
+                            <tr>
+                                <td>#(page.code)</td>
+                                <td>#(page.ironAmount)</td>
+                                <td>#(page.diamondAmount)</td>
+                                <td>#(page.redeemed)</td>
+                            </tr>
+                        #endfor
+                    </table>
+                    #paginate(data.pages.metadata)
+                </div>
             </div>
-            #paginate(data.pages.metadata)
         </div>
     #endexport
 #endextend

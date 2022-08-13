@@ -1,29 +1,46 @@
 #extend("base"):
     #export("body"):
-        <div class="flex flex-col">
-            <div class="prose w-full h-full max-w-lg m-auto mt-10" id="deposit-code-page">
-                <h2>Adjust Balance</h2>
-                <p>
-                    Ensure that the user has given you funds, or that you have given the user funds before
-                    adjusting the balance by hand.
-                </p>
-                <form class="flex flex-col space-y-6" method="post">
-                    <div>
-                        <label for="diamondAdjustment">Diamond Adjustment:</label>
-                        <input id="diamondAdjustment" name="diamondAdjustment" value="#(data.form.diamondAdjustment)" type="number">
-                    </div>
-                    <div>
-                        <label for="ironAdjustment">Iron Adjustment:</label>
-                        <input id="ironAdjustment" name="ironAdjustment" value="#(data.form.ironAdjustment)" type="number">
-                    </div>
-                    <input type="submit" value="Adjust">
-                </form>
-                <div id="form-errors">
-                    #for(error in data.errors):
-                        <div class="form-error">
-                            <p>#(error)</p>
+        <nav class="breadcrumbs-bar">
+            <a href="/">#breadcrumb("Home", "home")</a>
+            <span class="codicon codicon-triangle-right text-sm"></span>
+            <a href="/account/@me">#breadcrumb(data.user.username)</a>
+            <span class="codicon codicon-triangle-right text-sm"></span>
+            <a href="/account/@me/deposit-code">#breadcrumb("Adjust Balance")</a>
+        </nav>
+        <div class="folder-stack">
+            <div class="folder">
+                <div class="folder-tab">
+                    <a href="/account/#(data.user.username)">#(data.user.username)</a>
+                </div>
+                <div class="folder-content"></div>
+            </div>
+            <div class="folder folder-nest">
+                <div class="folder-tab">
+                    Adjust Balance
+                </div>
+                <div class="folder-content prose max-w-none">
+                    <p>
+                        Ensure that the user has given you funds, or that you have given the user funds before
+                        adjusting the balance by hand.
+                    </p>
+                    <form class="flex flex-col space-y-6" method="post">
+                        <div>
+                            <label for="diamondAdjustment">Diamond Adjustment:</label>
+                            <input id="diamondAdjustment" name="diamondAdjustment" value="#(data.form.diamondAdjustment)" type="number">
                         </div>
-                    #endfor
+                        <div>
+                            <label for="ironAdjustment">Iron Adjustment:</label>
+                            <input id="ironAdjustment" name="ironAdjustment" value="#(data.form.ironAdjustment)" type="number">
+                        </div>
+                        <input type="submit" value="Adjust">
+                    </form>
+                    <div id="form-errors">
+                        #for(error in data.errors):
+                            <div class="form-error">
+                                <p>#(error)</p>
+                            </div>
+                        #endfor
+                    </div>
                 </div>
             </div>
         </div>

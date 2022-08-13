@@ -7,13 +7,13 @@
             <span class="codicon codicon-triangle-right text-sm"></span>
             <a href="/account/@me/deposit-codes">#breadcrumb("Deposit Codes")</a>
         </nav>
-        <div class="folder-stack">
-            <div class="folder">
+        <div class="folder-stack" data-controller="folder-stack">
+            <turbo-frame class="folder" id="account_page" src="/account/@me">
                 <div class="folder-tab"><a href="/account/@me">My Account</a></div>
                 <div class="folder-content space-y-4">
                 </div>
-            </div>
-            <div class="folder folder-nest">
+            </turbo-frame>
+            <turbo-frame class="folder folder-nest" id="deposit_codes_page">
                 <div class="folder-tab">Deposit Codes</div>
                 <div class="folder-content space-y-4">
                     <p>These are deposit codes that you've made in the past.</p>
@@ -35,7 +35,7 @@
                     </table>
                     #paginate(data.pages.metadata)
                 </div>
-            </div>
+            </turbo-frame>
         </div>
     #endexport
 #endextend

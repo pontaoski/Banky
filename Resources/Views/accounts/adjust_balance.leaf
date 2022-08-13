@@ -7,14 +7,14 @@
             <span class="codicon codicon-triangle-right text-sm"></span>
             <a href="/account/@me/deposit-code">#breadcrumb("Adjust Balance")</a>
         </nav>
-        <div class="folder-stack">
-            <div class="folder">
+        <div class="folder-stack" data-controller="folder-stack">
+            <turbo-frame class="folder" id="account_page" src="/account/#(data.user.username)">
                 <div class="folder-tab">
                     <a href="/account/#(data.user.username)">#(data.user.username)</a>
                 </div>
                 <div class="folder-content"></div>
-            </div>
-            <div class="folder folder-nest">
+            </turbo-frame>
+            <turbo-frame class="folder folder-nest" id="adjust_balance_page">
                 <div class="folder-tab">
                     Adjust Balance
                 </div>
@@ -42,7 +42,7 @@
                         #endfor
                     </div>
                 </div>
-            </div>
+            </turbo-frame>
         </div>
     #endexport
 #endextend

@@ -47,19 +47,19 @@ struct PaginationTag: LeafTag, UnsafeUnescapedLeafTag {
 
         if pageCount <= letsShow {
             for i in 1...pageCount {
-                str += #"<a class="block" href="?page=\#(i)"> \#(i) </a>"#
+                str += #"<a data-turbo-action="advance" class="block" href="?page=\#(i)"> \#(i) </a>"#
             }
         } else {
             if page-2 > 1 {
-                str += #"<a class="block" href="?page=1"> 1 </a>"#
+                str += #"<a data-turbo-action="advance" class="block" href="?page=1"> 1 </a>"#
                 str += #"<span>...</span>"#
             }
             for i in max(page-2, 1)...min(page+2, pageCount) {
-                str += #"<a class="block" href="?page=\#(i)"> \#(i) </a>"#
+                str += #"<a data-turbo-action="advance" class="block" href="?page=\#(i)"> \#(i) </a>"#
             }
             if page+2 < pageCount {
                 str += #"<span>...</span>"#
-                str += #"<a class="block" href="?page=\#(pageCount)"> \#(pageCount) </a>"#
+                str += #"<a data-turbo-action="advance" class="block" href="?page=\#(pageCount)"> \#(pageCount) </a>"#
             }
         }
 

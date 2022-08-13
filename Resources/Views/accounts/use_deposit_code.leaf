@@ -7,16 +7,16 @@
             <span class="codicon codicon-triangle-right text-sm"></span>
             <a href="/account/@me/deposit-code">#breadcrumb("Redeem Deposit Code")</a>
         </nav>
-        <div class="folder-stack">
-            <div class="folder">
-                <div class="folder-tab"><a href="/account/@me">My Account</a></div>
+        <div class="folder-stack" data-controller="folder-stack">
+            <turbo-frame class="folder" id="account_page" src="/account/@me">
+                <div class="folder-tab"><a href="/account/@me" data-action="folder-stack#pop" data-id="account_page">My Account</a></div>
                 <div class="folder-content space-y-4">
                 </div>
-            </div>
-            <div class="folder folder-nest">
+            </turbo-frame>
+            <turbo-frame class="folder folder-nest" id="use_deposit_code_page">
                 <div class="folder-tab">Redeem Deposit Code</div>
                 <div class="folder-content">
-                    <form class="flex flex-col space-y-6" method="post">
+                    <form class="flex flex-col space-y-6" action="/account/@me/deposit-code" method="post">
                         <input name="code" placeholder="XXX-XXX-XXXX" value="#(data.depositCode)" type="text">
                         <input type="submit" value="Redeem">
                     </form>
@@ -37,7 +37,7 @@
                         </p>
                     </div>
                 </div>
-            </div>
+            </turbo-frame>
         </div>
     #endexport
 #endextend

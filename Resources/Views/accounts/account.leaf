@@ -23,13 +23,13 @@
                 </p>
             </div>
         #endif
-        <div class="folder-stack">
-            <div class="folder">
+        <div class="folder-stack" data-controller="folder-stack">
+            <turbo-frame class="folder" id="account_page">
                 <div class="folder-tab">
                     #if(app.user.id == data.user.id):
-                        <a href="/account/@me">My Account</a>
+                        <a href="/account/@me" data-action="folder-stack#pop" data-id="account_page">My Account</a>
                     #else:
-                        <a href="/account/#(data.user.username)">#(data.user.username)</a>
+                        <a href="/account/#(data.user.username)" data-action="folder-stack#pop" data-id="account_page">#(data.user.username)</a>
                     #endif
                 </div>
                 <div class="folder-content">
@@ -55,9 +55,9 @@
                     <h3 class="font-bold opacity-70">Deposit Codes</h3>
                     <div class="w-full max-w-2xl">
                         #if(app.user.id == data.user.id):                                
-                            <a class="pokitoki-button" href="/account/@me/deposit-code">Redeem A Deposit Code</a>
-                            <a class="pokitoki-button" href="/account/@me/create-deposit-code">Create A Deposit Code</a>
-                            <a class="pokitoki-button" href="/account/@me/deposit-codes">View Created Deposit Codes</a>
+                            <a class="pokitoki-button" data-action="folder-stack#push" data-id="use_deposit_code_page" href="/account/@me/deposit-code">Redeem A Deposit Code</a>
+                            <a class="pokitoki-button" data-action="folder-stack#push" data-id="create_deposit_code_page" href="/account/@me/create-deposit-code">Create A Deposit Code</a>
+                            <a class="pokitoki-button" data-action="folder-stack#push" data-id="deposit_codes_page" href="/account/@me/deposit-codes">View Created Deposit Codes</a>
                         #else:
                             <a class="pokitoki-button" href="/account/#(data.user.username)/send-money">Send Money</a>
                         #endif
@@ -66,7 +66,7 @@
                     #if(app.user.isTeller):
                         <h3 class="font-bold opacity-70">Teller Actions</h3>
                         <div class="w-full max-w-2xl">
-                            <a class="pokitoki-button" href="/account/#(data.user.username)/adjust-balance">Adjust Balance</a>
+                            <a class="pokitoki-button" data-action="folder-stack#push" data-id="adjust_balance_page" href="/account/#(data.user.username)/adjust-balance">Adjust Balance</a>
                         </div>
                     #endif
                 </div>

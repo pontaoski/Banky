@@ -43,10 +43,10 @@ input[type="submit"], button, .pokitoki-button {
 }
 
 .folder-stack > * {
-    @apply hidden md:flex md:opacity-50;
+    @apply hidden md:flex md:contrast-[.9];
 }
 .folder-stack > *:last-child {
-    @apply block md:flex md:opacity-100;
+    @apply block md:flex md:contrast-100;
 }
 
 .folder-tab {

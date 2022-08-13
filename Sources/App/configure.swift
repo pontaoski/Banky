@@ -10,6 +10,7 @@ public func configure(_ app: Application) throws {
 
     app.leaf.tags["paginate"] = PaginationTag()
     app.leaf.tags["breadcrumb"] = Breadcrumb()
+    app.leaf.tags["dummyFolder"] = DummyFolderTag()
 
     let dbConfig = Config.instance.database
     app.databases.use(.postgres(

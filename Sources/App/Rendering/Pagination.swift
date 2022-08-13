@@ -1,6 +1,31 @@
 import Leaf
 import Foundation
 
+struct DummyFolderTag: LeafTag, UnsafeUnescapedLeafTag {
+    struct DummyFolderTagError: Error {}
+    func render(_ ctx: LeafContext) throws -> LeafData {
+        guard ctx.parameters.count == 3 else {
+            throw DummyFolderTagError()
+        }
+        guard let title = ctx.parameters[0].string else {
+            throw DummyFolderTagError()
+        }
+        guard let id = ctx.parameters[1].string else {
+            throw DummyFolderTagError()
+        }
+        guard let href = ctx.parameters[2].string else {
+            throw DummyFolderTagError()
+        }
+        return .string("""
+        <turbo-frame class="folder" id="\(id)" src="\(href)">
+            <div class="folder-tab"><a href="\(href)">\(title)</a></div>
+            <div class="folder-content space-y-4">
+            </div>
+        </turbo-frame>
+        """)
+    }
+}
+
 struct Breadcrumb: LeafTag, UnsafeUnescapedLeafTag {
     struct BreadcrumbError: Error { }
     func render(_ ctx: LeafContext) throws -> LeafData {

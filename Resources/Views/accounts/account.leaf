@@ -9,20 +9,6 @@
                 <a href="/account/#(data.user.username)">#breadcrumb(data.user.username)</a>
             #endif
         </nav>
-        #if(data.depositSuccessful):
-            <div class="form-success w-full max-w-lg mt-10">
-                <p>
-                    The funds were successfully deposited into your account.
-                </p>
-            </div>
-        #endif
-        #if(data.adjustmentSuccessful):
-            <div class="form-success w-full max-w-lg mt-10">
-                <p>
-                    The user's account was successfully adjusted.
-                </p>
-            </div>
-        #endif
         <div class="folder-stack" data-controller="folder-stack">
             <turbo-frame class="folder" id="account_page">
                 <div class="folder-tab">
@@ -34,7 +20,7 @@
                 </div>
                 <div class="folder-content">
                     <div class="
-                        prose w-full max-w-2xl m-auto
+                        prose w-fit px-12 m-auto
                         p-3 border border-solid border-stone-50 rounded">
                         <div class="flex flex-col items-center">
                             <div class="flex flex-col md:flex-row md:space-x-10 items-center">
@@ -51,6 +37,21 @@
                             </div>
                         </div>
                     </div>
+
+                    #if(data.depositSuccessful):
+                        <div class="form-success w-full mt-10">
+                            <p>
+                                The funds were successfully deposited into your account.
+                            </p>
+                        </div>
+                    #endif
+                    #if(data.adjustmentSuccessful):
+                        <div class="form-success w-full mt-10">
+                            <p>
+                                The user's account was successfully adjusted.
+                            </p>
+                        </div>
+                    #endif
 
                     <h3 class="font-bold opacity-70">Deposit Codes</h3>
                     <div class="w-full max-w-2xl">

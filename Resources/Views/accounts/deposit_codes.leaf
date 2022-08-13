@@ -8,11 +8,7 @@
             <a href="/account/@me/deposit-codes">#breadcrumb("Deposit Codes")</a>
         </nav>
         <div class="folder-stack" data-controller="folder-stack">
-            <turbo-frame class="folder" id="account_page" src="/account/@me">
-                <div class="folder-tab"><a href="/account/@me">My Account</a></div>
-                <div class="folder-content space-y-4">
-                </div>
-            </turbo-frame>
+            #dummyFolder("My Account", "account_page", "/account/@me")
             <turbo-frame class="folder folder-nest" id="deposit_codes_page">
                 <div class="folder-tab">Deposit Codes</div>
                 <div class="folder-content space-y-4">

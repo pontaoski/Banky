@@ -6,24 +6,15 @@ export default class extends Controller {
         event.preventDefault()
         const el = event.target as HTMLAnchorElement
 
-        const id = el.dataset["id"]
-        const src = el.href
-
-        const srcAttr = document.createAttribute("src")
-        srcAttr.value = src
-
-        const idAttr = document.createAttribute("id")
-        idAttr.value = id
-
         const it = document.createElement("turbo-frame")
-        it.attributes.setNamedItem(srcAttr)
-        it.attributes.setNamedItem(idAttr)
+        it.setAttribute("src", el.href)
+        it.setAttribute("id", el.dataset["id"])
         it.classList.add("folder")
         it.classList.add("folder-nest")
 
         this.element.appendChild(it)
 
-        Turbo.visit(src)
+        Turbo.visit(el.href)
     }
     pop(event: Event) {
         event.preventDefault()

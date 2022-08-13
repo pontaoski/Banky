@@ -10,7 +10,9 @@
         <div class="folder-stack" data-controller="folder-stack">
             #dummyFolder("My Account", "account_page", "/account/@me")
             <turbo-frame class="folder folder-nest" id="create_deposit_code_page">
-                <div class="folder-tab">Create a Deposit Code</div>
+                <div class="folder-tab">
+                    <a href="/account/@me/create-deposit-code" data-action="folder-stack#pop" data-id="create_deposit_code_page">Create a Deposit Code</a>
+                </div>
                 <div class="folder-content prose max-w-none space-y-4">
                     <p>
                         The funds will be withdrawn from your account and become a deposit code,
